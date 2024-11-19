@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="static/static/site_logotype.png">
+  <link rel="stylesheet" href="static/static/src/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+  <script src="static/static/src/index.js" defer></script>
+  <script type="module" src="static/static/src/mermaid.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1 id="pageTitle">Лабораторная работа 4</h1>
+  </header>
+  <main>
+    <div id="dialog-cover">
+      <div id="dialog-window">
+        <h2 id="dialog-title">Информация о тексте</h2>
+        <ul id="words-info-list">
+        </ul>
+        <button id="dialog-exit-button">Закрыть</button>
+      </div>
+    </div>
+    <div id="dialog-cover-tree">
+      <div id="dialog-window-tree">
+        <h2 id="dialog-title-tree">Информация о тексте</h2>
+        <div id="mermaid"></div>
+        <button id="previous-tree">Предыдущий</button>
+        <button id="next-tree">Следующий</button>
+        <button id="dialog-exit-button-tree">Закрыть</button>
+      </div>
+    </div>
+    <div class="lr-result">
+      <div id="translation-input-output">
+        <div id="user-input">
+          <textarea id="user-input-field">
+          </textarea>
+          <button id="show-frequency-info-list">Показать спсок слов с синтаксической информацией</button>
+          <button id="translate-button">Перевести</button>
+        </div>
+        <div id="user-output-box">
+          <p id="user-output-text"></p>
+          <button id="show-synt-tree">Отобразить синтаксическое дерево</button>
+          <button id="show-frequency-info-list-out">Показать спсок слов с синтаксической информацией</button>
+        </div>
+      </div>
+      <div class="print-to-pdf">
+        Txt - отчёт
+      </div>
+    </div>
+  </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js" defer></script>
+</body>
+
+</html>
