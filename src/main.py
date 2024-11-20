@@ -5,13 +5,18 @@ from fastapi.middleware.cors import CORSMiddleware
 from tree_constructor import get_tree
 from synt_frequancy_list import get_list
 from machine_translation import TextTranslation
+from pymongo.errors import DuplicateKeyError
 import nltk
 import json
+import uuid
 import os
 import logging
+from pymongo import MongoClient, ASCENDING
 
-# currentTranslator = TextTranslation()
-
+client = MongoClient("mongodb://localhost:27017/")
+db = client["WordsDictionary"]
+collection = db["words_collection"]
+collection.create_index([("word", ASCENDING)], unique=True)
 
 logging.basicConfig(
     level=logging.INFO,  # Set the log level
@@ -89,6 +94,13 @@ async def get_synt_tree_data(text: str) -> JSONResponse:
 async def get_data_list(text: str, english: bool) -> JSONResponse:
     try:
         data_list = get_list(text, english=english)
+        for entry in data_list:
+            try:
+                unique_id = str(uuid.uuid4())  # Generate a unique UUID
+                entry["_id"] = unique_id
+                collection.insert_one(entry)
+            except DuplicateKeyError:
+                pass
         return JSONResponse(content=data_list)
     except Exception as e:
         return {"error": str(e)}

@@ -9,11 +9,13 @@ const dialog = document.getElementById("dialog-window");
 const overlay = document.getElementById("dialog-cover");
 const dialogTextBox = document.getElementById("words-info-list");
 const dialogExitButton = document.getElementById("dialog-exit-button");
+const saveTxtFileButton = document.getElementById("save-txt-file");
 
 translateTextButton.addEventListener("click", (e) => handleTranslationEvent());
 inputInfoButton.addEventListener("click", (e) => handleTextInfo(false));
 dialogExitButton.addEventListener("click", () => closeDialog());
 outputInfoButton.addEventListener("click", (e) => handleTextInfo(true));
+saveTxtFileButton.addEventListener("click", (e) => saveResultsToTxt());
 
 function closeDialog() {
   dialog.style.display = "none";
@@ -22,11 +24,11 @@ function closeDialog() {
 }
 
 async function handleTextInfo(isOutput) {
-  target = isOutput ? outputField.textContent : inputField.value;
-  dataRsponce = await fetch(
+  let target = isOutput ? outputField.textContent : inputField.value;
+  const dataRsponce = await fetch(
     "/data_list?text=" + target + "&english=" + !isOutput
   );
-  textInfo = await dataRsponce.json();
+  const textInfo = await dataRsponce.json();
   dialog.style.display = "flex";
   overlay.style.display = "flex";
   for (let item of textInfo) {
@@ -54,9 +56,37 @@ async function handleTranslationEvent() {
     console.log(inputField.value);
     translatedResponce = await fetch("/translation?text=" + inputField.value);
     translatedText = await translatedResponce.json();
-    console.log(translatedText);
     outputField.textContent = translatedText.result;
   } catch (error) {
     alert("Error: ", error);
   }
+}
+
+async function saveResultsToTxt() {
+  const dataRsponce = await fetch(
+    "/data_list?text=" + outputField.textContent + "&english=" + false
+  );
+  const textInfo = await dataRsponce.json();
+  let dictString = "";
+  for (let entry of textInfo) {
+    dictString +=
+      JSON.stringify(entry).replaceAll("{", "").replace("}", "") + "\n";
+  }
+  const text =
+    "     Результат перевода\n Исходный текст:\n" +
+    inputField.value +
+    "\n Перевод:\n" +
+    outputField.textContent +
+    "\n Словарь с интаксической информацией: \n" +
+    dictString;
+  const anchor = document.createElement("a");
+  const blob = new Blob([text], { type: "text/plain" });
+  anchor.href = URL.createObjectURL(blob); // Create an object URL for the Blob
+  anchor.download = "result.txt"; // Set the desired file name
+
+  // Trigger the download
+  anchor.click();
+
+  // Clean up the object URL
+  URL.revokeObjectURL(anchor.href);
 }
