@@ -13,6 +13,8 @@ import os
 import logging
 from pymongo import MongoClient, ASCENDING
 
+currentTranslator = TextTranslation()
+
 client = MongoClient("mongodb://localhost:27017/")
 db = client["WordsDictionary"]
 collection = db["words_collection"]
@@ -109,7 +111,7 @@ async def get_data_list(text: str, english: bool) -> JSONResponse:
 @app.get("/translation")
 async def get_translated_text(text: str) -> JSONResponse:
     try:
-        # result = currentTranslator.translate_text(text)
+        result = currentTranslator.translate_text(text)
         return JSONResponse(content={"result": text})
     except Exception as e:
         return {"result": str(e)}
