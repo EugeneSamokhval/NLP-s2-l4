@@ -1,4 +1,4 @@
-### Nlp translator with data about words
+### NLP translator with data about translated words collected into MongoDB database.
 
 ## Project Structure
 
@@ -30,9 +30,10 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+4. **Install MongoDB from official site**;
 
 ## Usage
 ```bash
    python -u src/main.py
 ```
-В браузере заходи на localhost:5500
+In browser searchbar input localhost:5500
